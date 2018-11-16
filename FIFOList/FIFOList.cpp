@@ -98,6 +98,8 @@ special flags to indiciate which one of these three cases are you in when you ha
      .............................. back  front.......
 
 
+I do suppose that if you choose to store an extra m_curSize variable, you can use that as a flag to solve the ambiguity in the 
+front == back case. I didnt really explore it in this project.
 */
 
 template <class T>
@@ -108,7 +110,6 @@ class FifoList
           {
                m_front = 0;
                m_back = 0;
-//               m_curSize = 0;
                m_allocatedSize = 8;     // wrap around problem?
                m_array = new T[m_allocatedSize];
           }
@@ -269,10 +270,10 @@ class FifoList
           int m_front;
           int m_back;
           T* m_array;
-//          int m_curSize;         // we have the size function, so we dont really need it
-		                           // you can choose to cache the size if you choose it
           int m_allocatedSize;     // we will resize as needed
-
+          // int m_curSize;        
+		  // we currently deduce the size based on m_front and m_back, so we dont really need this variable
+          // you can choose to cache the size if you choose it. Currently the size() function does have branching.
 };
 
 
