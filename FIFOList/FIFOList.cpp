@@ -128,7 +128,7 @@ m_curSize = 8
      | #7  | #0  | #1  | #2  | #3  | #4  | #5  | #6  |
      +-----+-----+-----+-----+-----+-----+-----+-----+
            front......................................           
-	 .......back
+     .......back
 
 here, we are using three variables: m_front, m_back, m_curSize, to keep track the state of the queue.
 */
