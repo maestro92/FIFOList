@@ -33,7 +33,7 @@ when we are full, this is what it looks like
      +-----+-----+-----+-----+-----+-----+-----+-----+
      | #2  | #3  | #4  | #5  | #6  |     | #0  | #1  |
      +-----+-----+-----+-----+-----+-----+-----+-----+
-     .............................. back  front.......
+     ...............................back  front.......
 
 
 ******************** two situations ********************
@@ -55,7 +55,7 @@ else if back < front
      +-----+-----+-----+-----+-----+-----+-----+-----+
      | #2  | #3  | #4  | #5  |     |     | #0  | #1  |
      +-----+-----+-----+-----+-----+-----+-----+-----+
-     ......................... back       front.......
+     ..........................back       front.......
 
      then curSize = QueueAllocSize - front + back
 
@@ -95,11 +95,42 @@ special flags to indiciate which one of these three cases are you in when you ha
      +-----+-----+-----+-----+-----+-----+-----+-----+
      | #2  | #3  | #4  | #5  | #6  |     | #0  | #1  |
      +-----+-----+-----+-----+-----+-----+-----+-----+
-     .............................. back  front.......
+     ...............................back  front.......
+
+the idea is that I am only using m_front and m_back to indicate the state of the queue.
 
 
-I do suppose that if you choose to store an extra m_curSize variable, you can use that as a flag to solve the ambiguity in the 
-front == back case. I didnt really explore it in this project.
+
+******************** m_curSize *********************
+
+If you do use an extra m_curSize variable, you can use that as a flag to solve the ambiguity in the 
+front == back case, and get back that empty slot. I didnt really explore it in this project.
+
+m_curSize = 0
+        0     1     2     3     4     5     6     7     QueueAllocSize = 8
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+     |     |     |     |     |     |     |     |     |
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+            front
+             back
+
+ m_curSize = 1
+        0     1     2     3     4     5     6     7     QueueAllocSize = 8
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+     |     | #0  |     |     |     |     |     |     |
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+            front..back
+           
+
+m_curSize = 8
+        0     1     2     3     4     5     6     7     QueueAllocSize = 8
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+     | #7  | #0  | #1  | #2  | #3  | #4  | #5  | #6  |
+     +-----+-----+-----+-----+-----+-----+-----+-----+
+           front......................................           
+	 .......back
+
+here, we are using three variables: m_front, m_back, m_curSize, to keep track the state of the queue.
 */
 
 template <class T>
@@ -272,8 +303,12 @@ class FifoList
           T* m_array;
           int m_allocatedSize;     // we will resize as needed
           // int m_curSize;        
-          // we currently deduce the size based on m_front and m_back, so we dont really need this variable
+
+          // you can choose to use this if you want.
+		  // we currently deduce the size based on m_front and m_back, so we dont really need this variable
           // you can choose to cache the size if you choose it. Currently the size() function does have branching.
+
+		  // for me it is worth it to have this extra variable and fully use your queue space
 };
 
 
