@@ -272,7 +272,7 @@ class FifoList
           T* m_array;
           int m_allocatedSize;     // we will resize as needed
           // int m_curSize;        
-		  // we currently deduce the size based on m_front and m_back, so we dont really need this variable
+          // we currently deduce the size based on m_front and m_back, so we dont really need this variable
           // you can choose to cache the size if you choose it. Currently the size() function does have branching.
 };
 
